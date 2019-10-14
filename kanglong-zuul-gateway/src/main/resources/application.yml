@@ -1,0 +1,34 @@
+server:
+  port: 7777
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: zuul-gateway
+  profiles:
+    active: ''
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8888/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+zuul:
+  prefix: /zuul
+  retryable: true
+ribbon:
+  ConnectTimeout: 10000
+  ReadTimeout: 10000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 1
+  MaxAutoRetries: 1
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMillisecond: 50000

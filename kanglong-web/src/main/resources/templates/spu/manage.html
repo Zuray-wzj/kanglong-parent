@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>康隆商城 - Zuray 出品</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+    <link th:href="@{/wizard/bootstrap/css/bootstrap-responsive.min.css}" rel="stylesheet"/>
+    <link th:href="@{/wizard/css/bwizard.min.css}" rel="stylesheet"/>
+    <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
+    <style type="text/css">
+        #wizard div.well #step4 table{
+            width:100%;
+            background-color: white;
+            border: 0px solid aliceblue;
+        }
+        #wizard div.well #step4 table tr{
+            height: 65px;
+            background-color: white;
+            border-width: 0px 0px 1px 0px;
+        }
+        #wizard div.well #step4 table tr td{
+            background-color: white;
+            border:1px solid #428bca ;
+            border-width: 0px 0px 1px 0px;
+        }
+
+        #wizard div.well #step4 table tr:first-child td {
+            border-top-width: 1px;
+        }
+    </style>
+</head>
+<!-- 引入样式模板 -->
+<head th:include="~{tpl :: css}"></head>
+
+<body>
+<!-- topbar starts -->
+<div th:replace="~{tpl :: topbar}"></div>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+
+        <!-- left menu starts -->
+        <div th:replace="~{tpl :: leftbar}"></div>
+        <!--/span-->
+        <!-- left menu ends -->
+
+        <noscript>
+            <div class="alert alert-block col-md-12">
+            </div>
+        </noscript>
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">数据管理</a>
+                    </li>
+                    <li>
+                        <a href="#">商品管理</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 商品列表--起始 -->
+            <div class="row">
+                <div class="box col-md-12">
+                    <div class="box-inner">
+                        <div class="box-header well" data-original-title="">
+                            <h2><i class="glyphicon glyphicon-user"></i> 商品管理</h2>
+
+                            <div class="box-icon">
+                                <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                                <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                        class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+                            <div class="alert alert-info">
+                                <a id="a_btn_add_brand" class="btn btn-info" href="#">
+                                    <i class="glyphicon glyphicon-plus-sign icon-white"></i>
+                                    添加新商品
+                                </a>
+                            </div>
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                                <thead>
+                                <tr>
+                                    <th>商品ID</th>
+                                    <th>商品标题</th>
+                                    <th>所属品类</th>
+                                    <th>品牌名称</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="e : ${spus} ">
+                                    <td th:text="${e.id}"></td>
+                                    <td class="center" th:text="${e.title}"></td>
+                                    <td class="center" th:text="${e.fullName}"></td>
+                                    <td class="center" th:text="${e.brandName}"></td>
+                                    <td class="center">
+                                        <a href="#" th:data="${e.id}" onclick="editSpu(this)">
+                                            <i class="glyphicon glyphicon-edit icon-white"></i>
+                                        </a>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <a href="#" th:data="${e.id}" onclick="deleteSpu(this)">
+                                            <i class="glyphicon glyphicon-trash icon-white"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 商品列表--结束 -->
+            <!-- content ends -->
+        </div><!--/#content.col-md-0-->
+    </div><!--/fluid-row-->
+
+    <!--查看商品-->
+    <div class="modal fade" id="div_view_brand" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4>查看商品</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 新增/修改商品-起始 -->
+                    <div class="form-group">
+                        <label for="id">商品ID</label><br>
+                        <span id="span_id"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="id">商品名称</label><br>
+                        <span id="span_name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">商品Logo</label><br>
+                        <img id="img_image" style="max-width: 200px ; max-height: 200px"></img>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstLetter">商品首字母</label><br>
+                        <span id="span_firstLetter"></span>
+                    </div>
+                    <!-- 品类 -->
+                    <div class="form-group">
+                        <label class="control-label" for="sel_cids">品类</label><br>
+                        <span id="span_cnames"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--新增/编辑商品-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 90%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4>新增商品</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="wizard">
+                        <ol>
+                            <li>基本信息</li>
+                            <li>商品描述</li>
+                            <li>规格参数</li>
+                            <li>SKU属性</li>
+                        </ol>
+                        <div id="div_page_1">
+                            <form id="form_1">
+                                <div class="form-group">
+                                    <label for="id">商品ID</label>
+                                    <input type="text" class="form-control" id="id" name="id" placeholder="商品ID" readonly="readonly">
+                                </div>
+                                <div class="controls">
+                                    <label class="control-label" for="cid3">选择商品品类</label>
+                                    <div class="controls">
+                                        <select id="cid3" name="cid3" class="form-control" data-rel="chosen">
+                                            <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.fullname}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="controls">
+                                    <label class="control-label" for="brandId">选择品牌</label>
+                                    <div class="controls">
+                                        <select id="brandId" name="brandId" class="form-control" data-rel="chosen">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="title">商品标题</label>
+                                    <input type="text" class="form-control" id="title" name="title" placeholder="商品标题">
+                                </div>
+                                <div class="form-group">
+                                    <label for="subTitle">商品卖点</label>
+                                    <input type="text" class="form-control" id="subTitle" name="subTitle" placeholder="商品卖点">
+                                </div>
+                                <div class="form-group">
+                                    <label for="packingList">包装清单</label>
+                                    <input type="text" class="form-control" id="packingList" name="packingList" placeholder="包装清单">
+                                </div>
+                                <div class="form-group">
+                                    <label for="packingList">售后服务</label>
+                                    <input type="text" class="form-control" id="afterService" name="afterService" placeholder="售后服务">
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <form id="form_2">
+                                <div class="form-group">
+                                    <label for="description">商品描述</label>
+                                    <textarea name="description" id="description"></textarea>
+                                    <script type="text/javascript">
+                                        CKEDITOR.instances["description"];
+                                    </script>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    <!-- 新增/修改spu-起始 -->
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>
+                    <a id="a_btn_save_spu" href="#" class="btn btn-primary" data-dismiss="modal">保存</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--成功通知，toast，转瞬即逝-->
+    <div class="modal fade" id="div_diag_notify_success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body"></div>
+            </div>
+        </div>
+    </div>
+    <!--失败通知，对话框，点击关闭才会消失-->
+    <div class="modal fade" id="div_diag_notify_failure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--确认对话框-->
+    <div class="modal fade" id="div_diag_confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4></h4>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <a href="#" id="a_btn_confirm_close" class="btn btn-default" data-dismiss="modal">关闭</a>
+                    <a href="#" id="a_btn_confirm_ok" class="btn btn-default" data-dismiss="modal">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="row">
+        <p class="col-md-9 col-sm-9 col-xs-12 copyright">&copy; <a href="http://usman.it" target="_blank">十八掌教育</a> 2012 - 2025</p>
+
+        <p class="col-md-3 col-sm-3 col-xs-12 powered-by">Powered by: <a href="http://usman.it/free-responsive-admin-template">www.it18zhang.com</a></p>
+    </footer>
+
+</div><!--/.fluid-container-->
+<div th:include="~{tpl :: js}"></div>
+<script type="application/javascript">
+    //所有商品
+    var allBrands = {} ;
+    //品类与规格组集合映射
+    var cid_groupsMap = {}
+    //规格参数id到规格参数对象的映射
+    var pid_paramMap = {}
+    $(function () {
+        //选择框宽度设置
+        $("#myModal .chosen-container").css("width", "100%")
+
+        //绑定品类下拉框的选择改变事件，触发商品列表框二级联动 , 同时改变第三向导页的内容
+        $("#myModal form #cid3").change(function () {
+            //清除商品下拉列表
+            $("#myModal form #brandId").empty();
+            //提取品类id
+            var cid = $(this).val()
+            if(allBrands[cid] == null){
+                $.ajaxSettings.async = false
+                $.get("/brand/findbycid?cid=" + cid, function (data) {
+                    allBrands[cid] = data;
+                })
+                $.ajaxSettings.async = false
+            }
+            //组装商品下拉框
+            for(var i = 0 ; i < allBrands[cid].length ; i ++){
+                $("#myModal form #brandId").append("<option value='" + allBrands[cid][i].id + "'>" + allBrands[cid][i].name + "</option>")
+            }
+            $("#myModal form #brandId").trigger("chosen:updated")
+
+            //组装第三向导页的内容
+            $("#wizard div.well #step3").empty()
+            if(cid_groupsMap[cid] == null){
+                $.ajaxSettings.async = false
+                $.get("/spec/findgroupandparamsbycid?cid=" + cid, function (data) {
+                    cid_groupsMap[cid] = data;
+                })
+                $.ajaxSettings.async = true
+            }
+            var html = '<form id="form_3">' ;
+            for(var i = 0 ; i < cid_groupsMap[cid].length ; i ++){
+                //第i组
+                var g = cid_groupsMap[cid][i] ;
+                html = html + '<label style="margin-left: -12px">'+g.name+'</label>' ;
+                for(var j = 0 ; j < g.params.length ; j ++){
+                    var p = g.params[j]
+                    //添加到id和参数对应映射中
+                    pid_paramMap[p.id] = p
+                    html = html + '<div class="form-group" style="margin: 3px">' ;
+                    //是否是常规参数
+                    var generic = p.generic
+                    if(generic){
+                        html = html + '<label style="width:140px">' + p.name + '</label>';
+                    }
+                    else{
+                        html = html + '<label style="width:140px;color:red">' + p.name + '</label>';
+                    }
+
+                    //处理规格参数值
+                    //候选值
+                    if(p.segments != null && p.segments != ''){
+                        var segs = p.segments.split(",")
+                        for(var k = 0 ; k  < segs.length ; k ++){
+                            html = html + '<label><input type="checkbox" name="'+p.id+'" value="'+segs[k]+ p.unit +'" generic="'+generic+'">' + segs[k] + '</label>&nbsp;&nbsp;&nbsp;&nbsp;' ;
+                        }
+                    }
+                    //输入值
+                    else{
+                        html = html + '<input type="text" name="' + p.id + '" generic="'+generic+'" class="form-control" style="display: inline ;width: 85%">' ;
+                    }
+                    html = html + '</div>' ;
+                }
+                //分割线
+                if (i != cid_groupsMap[cid].length - 1) {
+                    html = html + '<hr style="height: 1px;background-color: #949494;margin: auto -16px">';
+                }
+            }
+            html = html + '</form>'
+            $("#wizard div.well #step3").append(html) ;
+        }) ;
+
+        //sku选项卡点击事件
+        $("#wizard ol li:last-child").click(function () {
+            renderSkuTab();
+        }) ;
+        //导航按钮点击事件
+        $("#wizard ul li:last-child").click(function () {
+            var hide = $("#step3").attr("aria-hidden")
+            if (hide == "false") {
+                renderSkuTab();
+            }
+        }) ;
+
+        //新增商品按钮点击事件
+        $("#a_btn_add_brand").click(function () {
+            //
+            $("#form_brand #div_progress").hide()
+            $("#form_brand #img_logo_preview").hide()
+            //将清空品类选择框
+            $("#myModal form #sel_cids").val([])
+            $("#myModal form #sel_cids").trigger("chosen:updated")
+
+
+            $('#myModal').modal('show');
+        });
+
+        //保存
+        $("#myModal #a_btn_save_spu").click(function(){
+            //表单1参数
+            var form1_param = $("#form_1").serialize() ;
+            //表单2参数
+            var form2_param = "description=" + CKEDITOR.instances["description"].getData()
+            //规格参数
+            var form3_param = "genericSpec="+ extractSpecParams(true) + "&specialSpec=" + extractSpecParams(false) ;
+            //
+            var form4_param = $("#form_4").serialize() ;
+            //所有参数
+            var params = form1_param + "&" + form2_param + "&" + form3_param + "&" + form4_param ;
+            $.post("/spu/saveOrUpdate" , params , function (r) {
+                console.log(r.responseText)
+            })
+            console.log(params)
+        })
+
+        //选择文件控件事件
+        $("#form_brand #image").change(function () {
+            uploadFiles()
+        })
+
+        //修改多选列表样式，否则出不来效果
+        $("div.chosen-container-multi").css("width" , "100%")
+    }) ;
+
+    //抽取规格参数，专门用于向导页面(3)
+    function extractSpecParams(flag){
+        //对象
+        var obj = {}
+        $("input[generic="+flag+"]").each(function(){
+            var type = $(this).attr("type")
+            var pid = $(this).attr("name")
+
+            //复选框
+            if(type == 'checkbox'){
+                if($(this)[0].checked){
+                    if(!(pid in obj)){
+                        obj[pid] = []
+                    }
+                    obj[pid].push($(this).val())
+                }
+            }
+            //文本框
+            else{
+                //取得文本框的值
+                var value = $(this).val()
+                var arr = value.split(",")
+                if(arr != null && arr.length > 1){
+                    obj[pid] = arr ;
+                }
+                else{
+                    obj[pid] = value ;
+                }
+            }
+        }) ;
+        return JSON.stringify(obj) ;
+    }
+
+    //渲染sku选项卡页面
+    function renderSkuTab(){
+        //存放sku对应的特殊规格的pid和值.
+        var sp = {}
+        //找出所有的特殊规格参数
+        $("#form_3 input[generic=false]").each(function(){
+            //空间类型
+            var type = $(this).attr("type")
+            //规格参数的id
+            var pid = $(this).attr("name")
+            //存放控件的值
+            var v = null ;
+            //复选框
+            if(type =='checkbox'){
+                //属性不在sp中
+                if(!(pid in sp)){
+                    sp[pid] = []
+                }
+                if($(this)[0].checked){
+                    sp[pid].push($(this).val()) ;
+                }
+            }
+            else{
+                v = $(this).val()
+                //放入sp集合中
+                sp[pid] = v.split(",")
+            }
+        }) ;
+
+        //生成笛卡尔积
+        var arr = []
+        //sku对应的特殊规格参数id集合
+        var keys = Object.keys(sp) ;
+        for(var i = 0 ; i < keys.length ; i ++){
+            var paramId = keys[i] ;          //规格参数id
+            var paramValueArr = sp[paramId]  //参数值数组
+            var arr_temp = arr ;
+            arr = []
+            //首次迭代
+            if(arr_temp == null || arr_temp.length == 0 ){
+                for(var j = 0  ;  j < paramValueArr.length ; j++){
+                    //sku = {4:{index : 0 , label:红色} , 12 : {}}
+                    var sku = {} ;
+                    sku[paramId] = {}
+                    sku[paramId].index = j ;
+                    sku[paramId].label = paramValueArr[j];
+                    arr.push(sku) ;
+                }
+            }
+            //原来有内容
+            else{
+                for (var j = 0; j < paramValueArr.length; j++) {
+                    for(var k = 0 ; k < arr_temp.length ; k ++){
+                        var oldSku = arr_temp[k] ;
+                        //深度js对象
+                        var newSku = deepCopyObject(oldSku) ;
+                        newSku[paramId] = {}
+                        newSku[paramId].index = j ;
+                        newSku[paramId].label = paramValueArr[j] ;
+                        arr.push(newSku) ;
+                    }
+                }
+            }
+        }
+        //渲染sku表格
+        var html = "<form id='form_4'><table>"
+        //表头
+        html = html + "<tr>"
+        for(var i = 0 ; i < keys.length ;  i ++ ){
+            html = html + "<td>"+pid_paramMap[keys[i]].name+"</td>"
+        }
+        html = html + "<td>标题</td>"
+        html = html + "<td>价格</td>"
+        html = html + "<td>库存</td>"
+        html = html + "<td>是否启用</td>"
+        html = html + "</tr>"
+        //表格内容
+        for(var i = 0 ; i < arr.length ; i ++){
+            html = html + "<tr>" ;
+            var arrr = genIndexesAndOwnSpecStr(arr[i]) ;
+            var sku_ownSpec = arrr[0] ;
+            var sku_indexes = arrr[1] ;
+
+            for(var j = 0 ; j < keys.length ; j ++){
+                html = html + "<td>"+arr[i][keys[j]].label + "</td>";
+            }
+            html = html + "<td>";
+            html = html +      "<input type='hidden' name='sku' value='" + sku_indexes + "'>";
+            html = html +      "<input type='hidden' name='" + sku_indexes + ".id'>";
+            html = html +      "<input type='hidden' name='" + sku_indexes + ".ownSpec' value='"+sku_ownSpec+"'>";
+            html = html +      "<input type='text' name='"+ sku_indexes+".title'>" ;
+            html = html + "</td>"
+            html = html + "<td><input type='text' name='" + sku_indexes + ".price'></td>"
+            html = html + "<td><input type='text' name='" + sku_indexes + ".stock'></td>"
+            html = html + "<td><input type='checkbox' name='" + sku_indexes + ".enable' value='true' checked></td>"
+            html = html + "</tr>" ;
+        }
+        html = html + "</table></form>"
+        $("#wizard div.well #step4").empty();
+        $("#wizard div.well #step4").append(html);
+    }
+
+    //生成索引串和特殊规格串
+    function genIndexesAndOwnSpecStr(sku){
+        //提取所有规格参数ids
+        var paramIds = Object.keys(sku)
+        var indexes = "" ;
+        var obj = {}
+        for(var i = 0 ; i < paramIds.length ; i ++){
+            var index = sku[paramIds[i]].index ;
+            var label = sku[paramIds[i]].label ;
+            obj[paramIds[i]] = label ;
+            //不是最后一个pid
+            if(i != (paramIds.length - 1)){
+                indexes = indexes + index + "_"
+            }
+            else{
+                indexes = indexes + index
+            }
+        }
+        var ownSpec = JSON.stringify(obj) ;
+        return [ownSpec , indexes] ;
+    }
+
+    //深度复制对象,递归对整个对象图进行复制
+    function deepCopyObject(obj){
+        //对象类型
+        if(obj.__proto__.constructor.name == "Object"){
+            var copy = {}
+            var keys = Object.keys(obj) ;
+            for(var i = 0 ;i < keys.length ; i ++){
+                var key = keys[i] ;
+                var value = obj[key] ;
+                var newkey = deepCopyObject(key) ;
+                var newvalue = deepCopyObject(value) ;
+                copy[newkey] = newvalue ;
+            }
+            return copy ;
+        }
+        //数组类型
+        else if(obj.__proto__.constructor.name == "Array"){
+            var arr= []
+            for(var i = 0 ; i < obj.length ; i ++){
+                arr.push(deepCopyObject(obj[i])) ;
+            }
+            return arr;
+        }
+        else{
+            return obj ;
+        }
+    }
+
+
+    //上传文件函数
+    function uploadFiles() {
+        //显式进度条
+        $("#form_brand #div_progress").show()
+
+        var formData = new FormData();
+        var image = $("#form_brand #image")[0].files[0] ;
+        formData.append("image", image);
+        $.ajax({
+            type: "post",
+            async: true,
+            data: formData,
+            url: "/brand/upload",
+            processData: false,         // 不处理发送的数据
+            contentType: false,         // 不设置Content-Type请求头
+            xhr: function () {
+                xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function (e) {
+                        var loaded = e.loaded;
+                        var total = e.total;
+                        var percent = Math.floor(100 * loaded / total) + "%";
+                        $("#div_progress").css("width", percent);
+                    }, false);
+                }
+                return xhr;
+            },
+            //成功返回
+            success: function (result) {
+                //隐藏进度条
+                $("#form_brand #div_progress").hide()
+                $("#form_brand #img_logo_preview").attr("src" , result)
+                $("#form_brand #img_logo_preview").show()
+            },
+            error: function () {
+                toast_failure("上传失败！");
+            }
+        });
+    }
+
+    //失败吐司函数
+    function toast_failure(msg){
+        $("#div_diag_notify_failure .modal-body").text(msg) ;
+        $("#div_diag_notify_failure").modal("show") ;
+    }
+
+    //成功吐司函数
+    function toast_success(msg){
+        $("#div_diag_notify_success .modal-body").text(msg) ;
+        $("#div_diag_notify_success").modal("show") ;
+        setTimeout(function () {
+            $("#div_diag_notify_success").modal("hide");
+        }, 1000)
+    }
+
+    //删除商品
+    function deleteSpu(a){
+        //提取商品id
+        var spuid = $(a).attr("data")
+        $("#div_diag_confirm #a_btn_confirm_ok").click(function () {
+            $.get("/spu/deletebyid?spuid=" + spuid , function () {
+                toast_success("删除成功!")
+            } ).error(function (r) {
+                toast_failure(r.responseText)
+            })
+        });
+
+        $("#div_diag_confirm .modal-header").text("删除确认");
+        $("#div_diag_confirm .modal-body").html("确认删除记录 <b>"+spuid+"</b> 吗?");
+        $("#div_diag_confirm").modal("show");
+    }
+
+    //查看商品
+    function viewBrand(a){
+        //查询商品id
+        var id = $(a).attr("data")
+
+        //设置同步请求
+        $.ajaxSettings.async=false
+        $.get("/brand/findbyid?id=" + id , function (brand) {
+            $("#div_view_brand #span_id").text(brand.id) ;
+            $("#div_view_brand #span_name").text(brand.name) ;
+            $("#div_view_brand #img_image").attr("src" , brand.image) ;
+            $("#div_view_brand #span_firstLetter").text(brand.firstLetter) ;
+        })
+        $.ajaxSettings.async = true
+        $.get("/category/findbybid?bid=" + id , function (data) {
+            var cnames = "" ;
+            for(var i = 0 ; i < data.length ; i ++){
+                cnames = cnames + data[i].name + " ; <br>"
+            }
+            $("#div_view_brand #span_cnames").html(cnames) ;
+            $("#div_view_brand").modal("show")
+        })
+    }
+
+    //编辑商品
+    function editSpu(a){
+        var spuid = $(a).attr("data") ;
+        $.ajaxSettings.async = false                                    //设置同步请求
+        $.get("/spu/findbyid?id=" + spuid , function(spu){
+            var cid3 = spu.cid3 ;                                       //取得品类
+            //form_1
+            $("#form_1 select[name=cid3]").val(cid3) ;
+            $("#form_1 select[name=cid3]").trigger("chosen:updated") ;  //让值得以显示
+            $("#form_1 select[name=cid3]").change() ;                   //触发改变事件，导致规格参数的页面变化
+            $("#form_1 select[name=brandId]").val(spu.brandId) ;
+            $("#form_1 select[name=brandId]").trigger("chosen:updated");
+
+            $("#form_1 input[name=title]").val(spu.title) ;
+            $("#form_1 input[name=subTitle]").val(spu.subTitle) ;
+            $("#form_1 input[name=saleable]").val(spu.saleable) ;
+            $("#form_1 input[name=valid]").val(spu.valid) ;
+            $("#form_1 input[name=packingList]").val(spu.spuDetail.packingList) ;
+            $("#form_1 input[name=afterService]").val(spu.spuDetail.afterService) ;
+
+            //form_2
+            CKEDITOR.instances["description"].setData(spu.spuDetail.description) ;
+
+            //form_3
+            setSpecParams(JSON.parse(spu.spuDetail.genericSpec)) ;           //设置常规规格参数
+            setSpecParams(JSON.parse(spu.spuDetail.specialSpec)) ;           //设置特殊规格参数
+            $("#wizard ol li:last-child").trigger("click")                   //触发点击，渲染sku选项卡列表
+
+            //form_4
+            for(var i = 0 ; i < spu.skus.length ; i ++){
+                var sku = spu.skus[i] ;
+                $("#form_4 input[name='"+sku.indexes+".id]'").val(sku.id) ;
+                $("#form_4 input[name='"+sku.indexes+".title']").val(sku.title) ;
+                $("#form_4 input[name='"+sku.indexes+".price']").val(sku.price) ;
+                $("#form_4 input[name='"+sku.indexes+".stock']").val(sku.stock) ;
+                $("#form_4 input[name='"+sku.indexes+".enable']").val(sku.enable) ;
+            }
+
+            $("#myModal").modal("show")
+        })
+    }
+
+
+    //设置规格参数
+    function setSpecParams(obj) {
+        var paramIds = Object.keys(obj) ;
+        for(var i = 0 ; i < paramIds.length ; i ++){
+            var paramId = paramIds[i] ;
+            //判断规格参数是否有候选值，候选值使用的是checkbox
+            if(pid_paramMap[paramId].segments != null && pid_paramMap[paramId].segments != ''){
+                $("#form_3 input[name="+paramId+"]").val(obj[paramId]) ;
+            }
+            else{
+                $("#form_3 input[name=" + paramId + "]").val(obj[paramId]);
+            }
+        }
+    }
+
+
+</script>
+<script th:src="@{/wizard/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/wizard/js/bwizard.min.js}" type="text/javascript"></script>
+<script type="text/javascript">
+    $("#wizard").bwizard();
+    CKEDITOR.replace('description');
+</script>
+</body>
+</html>

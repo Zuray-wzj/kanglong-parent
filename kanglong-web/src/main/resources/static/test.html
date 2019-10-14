@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Free HTML5 Bootstrap Admin Template</title>
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            var v = $("#sel1").val()
+            $("#opt1,#opt2,#opt4,#opt3").attr("selected", "selected")
+            $("#sel1").change()
+        })
+    </script>
+</head>
+
+<body>
+    <select id="sel1" multiple>
+        <option id="opt1" value="1" selected="selected">1</option>
+        <option id="opt2" value="2">2</option>
+        <option id="opt3" value="3">3</option>
+        <option id="opt4" value="4">4</option>
+    </select>
+</body>
+</html>
