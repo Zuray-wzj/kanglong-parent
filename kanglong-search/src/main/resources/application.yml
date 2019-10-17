@@ -1,0 +1,29 @@
+server:
+  port: 6000
+  max-http-header-size: 102400
+spring:
+  application:
+    name: search-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/kanglong
+    username: root
+    password: root
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+  data:
+    elasticsearch:
+      cluster-nodes: 127.0.0.1:9300
+      repositories:
+        enabled: true
+#  rabbitmq:
+#    host: 192.168.231.101
+#    virtual-host: /
+#    username: guest
+#    password: guest
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8888/eureka

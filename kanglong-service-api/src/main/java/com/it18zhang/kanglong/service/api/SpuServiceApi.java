@@ -30,4 +30,17 @@ public interface SpuServiceApi {
 	 */
 	@PostMapping("/spu/saveOrUpdate")
 	public void saveOrUpdate(@RequestBody Spu spu) ;
+
+	/**
+	 * 按照id删除spu
+	 */
+	@GetMapping("/spu/deletebyid")
+	void deleteById(@RequestParam("spuid") Long id) ;
+
+	/**
+	 * 按照id查询Spu
+	 */
+	@GetMapping("/spu/findbyid")
+	Spu findById(@RequestParam("id") Long id);
+
 }

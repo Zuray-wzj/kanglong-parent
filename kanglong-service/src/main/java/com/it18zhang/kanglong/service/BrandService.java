@@ -131,7 +131,7 @@ public class BrandService {
 			String logoPath = b.getImage() ;
 			if(StringUtils.isNotEmpty(logoPath)){
 				String fileName = logoPath.substring(logoPath.lastIndexOf("/") + 1) ;
-				String dir9000 = "/Users/Shared/Relocated Items/Security/code/wzj_Mac/idea_demo/kanglong-parent/kanglong-web/src/main/resources/static/img" ;
+				String dir9000 = "/Library/code/wzj_Mac/idea_demo/kanglong-parent/kanglong-web/src/main/resources/static/img" ;
 				File f = new File(dir9000 , fileName) ;
 				if(f.exists()){
 					f.delete() ;

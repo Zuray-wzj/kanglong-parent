@@ -73,7 +73,7 @@ public class BrandControllerProxy {
 			String ext = origName.substring(origName.lastIndexOf(".")) ;
 			String newFileName = fileName + "_" + ms + ext ;
 			//3423
-			File file9000 = new File("/Users/Shared/Relocated Items/Security/code/wzj_Mac/idea_demo/kanglong-parent/kanglong-web/src/main/resources/static/img" , newFileName) ;
+			File file9000 = new File("/Library/code/wzj_Mac/idea_demo/kanglong-parent/kanglong-web/src/main/resources/static/img" , newFileName) ;
 			//File file9001 = new File("D:\\downloads\\nginx-1.6.3\\html\\9001" , newFileName) ;
 			copyFile(image.getInputStream() , file9000);
 			//copyFile(image.getInputStream() , file9001);

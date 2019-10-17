@@ -136,4 +136,21 @@ public class SpuControllerProxy {
 		return null ;
 	}
 
+	/**
+	 * 按照id删除spu
+	 */
+	@GetMapping("/deletebyid")
+	@ResponseBody
+	public void deleteById(@RequestParam("spuid") Long spuid){
+		spuServiceApi.deleteById(spuid);
+	}
+
+	/**
+	 * 按照id查询商品
+	 */
+	@GetMapping("/findbyid")
+	@ResponseBody
+	public Spu findById(@RequestParam("id") Long id){
+		return spuServiceApi.findById(id) ;
+	}
 }
