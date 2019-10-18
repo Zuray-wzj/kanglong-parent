@@ -67,4 +67,10 @@ public class CategoryController {
 	public List<Category> findSubList(@RequestParam("pid") Long pid){
 		return categoryService.findSubList(pid) ;
 	}
+
+
+	@GetMapping("/findbyids")
+	public List<Category> findByIds(@RequestParam("ids") Long[] ids){
+		return categoryService.findByIds(ids) ;
+	}
 }

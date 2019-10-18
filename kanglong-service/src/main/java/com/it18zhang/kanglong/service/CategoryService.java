@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -98,5 +99,12 @@ public class CategoryService {
 	 */
 	public List<Category> findSubList(Long pid){
 		return categoryMapper.findSubList(pid) ;
+	}
+
+	/**
+	 * 按照ids查询品类集合
+	 */
+	public List<Category> findByIds(Long[] ids) {
+		return categoryMapper.selectByIdList(Arrays.asList(ids)) ;
 	}
 }

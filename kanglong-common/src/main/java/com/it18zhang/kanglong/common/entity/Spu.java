@@ -22,7 +22,7 @@ public class Spu {
     private Long cid3;          //3级类目id
     private String title;       //标题
     private String subTitle;    //子标题
-    private Boolean saleable = true;    //是否可出售
+    private Boolean salable = true;    //是否可出售
     private Boolean valid = true;      //是否有效，逻辑删除用
     private Date createTime;    //创建时间
     private Date lastUpdateTime;//最后修改时间
