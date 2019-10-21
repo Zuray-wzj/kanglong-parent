@@ -44,6 +44,8 @@ public class ItemDetailService {
 		map.put("spuDetail",spu.getSpuDetail()) ;
 		map.put("skus",spu.getSkus()) ;
 
+
+
 		// 2.查询品牌
 		Long brandId = spu.getBrandId() ;
 		Brand brand = brandServiceApi.findById(brandId).getBody() ;
@@ -56,6 +58,7 @@ public class ItemDetailService {
 		// 4.查询规格组
 		List<SpecGroup> specGroups = specGroupServiceApi.findByCid(spu.getCid3()) ;
 		map.put("groups" , specGroups)  ;
+
 
 		//查询所有的规格参数
 		List<SpecParamVO> specParamVOS = specParamServiceApi.findByCid(spu.getCid3()) ;

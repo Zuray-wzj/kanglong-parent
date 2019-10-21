@@ -40,4 +40,11 @@ public class ItemDetailController {
 
 		return "item" ;
 	}
+
+	@GetMapping("/xxx")
+	public String toPage1(){
+
+
+		return "item" ;
+	}
 }
