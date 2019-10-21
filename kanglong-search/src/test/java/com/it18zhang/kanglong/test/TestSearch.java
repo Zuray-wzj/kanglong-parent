@@ -3,15 +3,18 @@ package com.it18zhang.kanglong.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.it18zhang.kanglong.common.entity.Item;
-import com.it18zhang.kanglong.KangLongSearchApplication;
+//import com.it18zhang.kanglong.KangLongSearchApplication;
 import com.it18zhang.kanglong.common.entity.Sku;
 import com.it18zhang.kanglong.common.entity.Spu;
 import com.it18zhang.kanglong.common.vo.SpecParamVO;
 import com.it18zhang.kanglong.common.vo.SpuVO;
+import com.it18zhang.kanglong.search.KangLongSearchApplication;
 import com.it18zhang.kanglong.search.dao.ItemRepository;
-import com.it18zhang.kanglong.common.entity.SearchRequest;
-import com.it18zhang.kanglong.common.entity.SearchResult;
+
+import com.it18zhang.kanglong.search.domain.SearchRequest;
+import com.it18zhang.kanglong.search.domain.SearchResult;
 import com.it18zhang.kanglong.search.service.SearchService;
+
 import com.it18zhang.kanglong.service.api.CategoryServiceApi;
 import com.it18zhang.kanglong.service.api.SpecParamServiceApi;
 import com.it18zhang.kanglong.service.api.SpuServiceApi;
@@ -231,6 +234,7 @@ public class TestSearch {
 	@Test
 	public void testSearchService(){
 		SearchRequest req = new SearchRequest() ;
+		//SearchRequest req = new SearchRequest() ;
 		req.setKey("手机");
 		req.setPage(1);
 		//SearchResult res = searchService.search(req) ;

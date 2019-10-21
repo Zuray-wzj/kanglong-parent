@@ -1,29 +1,28 @@
 package com.it18zhang.kanglong.search.controller;
 
-import com.it18zhang.kanglong.common.entity.Item;
-import com.it18zhang.kanglong.common.vo.PageResult;
-import com.it18zhang.kanglong.search.domain.SearchRequest;
+import com.it18zhang.kanglong.common.entity.SearchRequest;
+import com.it18zhang.kanglong.common.entity.SearchResult;
 import com.it18zhang.kanglong.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 搜索控制器
  */
-//@Controller
-//@RequestMapping("/search")
+@RestController
+@RequestMapping("/search")
 public class SearchController {
 
 	@Autowired
 	private SearchService searchService ;
 
 	@PostMapping("/page")
-	@ResponseBody
-	public PageResult<Item> search(@RequestBody SearchRequest req) {
-		return searchService.search(req) ;
+	public SearchResult search(@RequestBody SearchRequest req) {
+		SearchResult sr = searchService.search(req) ;
+		sr.setTotal(sr.getCount());
+		sr.setTotalPage(sr.getPages());
+		sr.setItems(sr.getList());
+		return sr ;
 	}
 }

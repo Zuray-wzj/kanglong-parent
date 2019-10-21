@@ -7967,7 +7967,7 @@
 
                         this.slideTimeout = setTimeout(function () {
                             return _this2.next();
-                        }, this.interval > 0 ? this.interval : 6000);
+                        }, this.interval > 0 ? this.interval : 5800);
                     },
                     register: function register(uid, open) {
                         this.items.push({ uid: uid, open: open });

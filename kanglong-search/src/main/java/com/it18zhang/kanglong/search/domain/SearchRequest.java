@@ -1,5 +1,6 @@
 package com.it18zhang.kanglong.search.domain;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,7 +12,7 @@ public class SearchRequest {
 	//当前页号
 	private Integer page = DEFAULT_PAGE ;
 	//规格参数过滤
-	private Map<String,String> filter ;
+	private Map<String,String> filter = new HashMap<String,String>();
 
 	//每页显示记录数
 	public static final Integer DEFAULT_SIZE = 20 ;

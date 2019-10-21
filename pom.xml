@@ -12,6 +12,7 @@
         <module>kanglong-service-api</module>
         <module>my-spring-es</module>
         <module>kanglong-search</module>
+        <module>kanglong-itemdetail</module>
 
 
     </modules>

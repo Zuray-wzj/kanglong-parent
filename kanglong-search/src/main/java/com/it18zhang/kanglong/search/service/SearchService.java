@@ -3,18 +3,15 @@ package com.it18zhang.kanglong.search.service;
 import com.it18zhang.kanglong.common.entity.Brand;
 import com.it18zhang.kanglong.common.entity.Category;
 import com.it18zhang.kanglong.common.entity.Item;
-import com.it18zhang.kanglong.common.vo.PageResult;
 import com.it18zhang.kanglong.common.vo.SpecParamVO;
 import com.it18zhang.kanglong.search.dao.ItemRepository;
-import com.it18zhang.kanglong.search.domain.SearchRequest;
-import com.it18zhang.kanglong.search.domain.SearchResult;
+import com.it18zhang.kanglong.common.entity.SearchRequest;
+import com.it18zhang.kanglong.common.entity.SearchResult;
 import com.it18zhang.kanglong.service.api.BrandServiceApi;
 import com.it18zhang.kanglong.service.api.CategoryServiceApi;
 import com.it18zhang.kanglong.service.api.SpecParamServiceApi;
 import com.it18zhang.kanglong.service.api.SpuServiceApi;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.common.util.CollectionUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.Aggregation;
@@ -76,7 +73,7 @@ public class SearchService {
 			String key = entry.getKey() ;
 			String value = entry.getValue() ;
 			if(!"cid3".equals(key) && !"brandId".equals(key)){
-				key = "spec." + key + ".keyword" ;
+				key = "specs." + key + ".keyword" ;
 			}
 			allQuery.filter(QueryBuilders.termsQuery(key , value)) ;
 		}
@@ -126,7 +123,7 @@ public class SearchService {
 			for(SpecParamVO vo : params){
 				String specParamName = vo.getName() ;
 				//添加规格参数的聚合查询
-				qb2.addAggregation(AggregationBuilders.terms(specParamName).field("spec." + specParamName + ".keyword")) ;
+				qb2.addAggregation(AggregationBuilders.terms(specParamName).field("specs." + specParamName + ".keyword")) ;
 			}
 			page = t.queryForPage(qb2.build() , Item.class) ;
 			aggs = page.getAggregations();
@@ -137,7 +134,13 @@ public class SearchService {
 			for(Map.Entry<String,Aggregation> entry : aggMap.entrySet()){
 				//规格参数
 				String paramName = entry.getKey() ;
-				StringTerms value = aggs.get(paramName) ;
+				StringTerms value = null ;
+				if( aggs.get(paramName) instanceof  StringTerms){
+					value = aggs.get(paramName);
+				}
+				else{
+					continue;
+				}
 				List<StringTerms.Bucket> list =value.getBuckets() ;
 				//选项值集合
 				List<String> options = new ArrayList<String>() ;
