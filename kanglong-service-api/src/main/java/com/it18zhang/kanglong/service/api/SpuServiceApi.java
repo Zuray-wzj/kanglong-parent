@@ -1,6 +1,7 @@
 package com.it18zhang.kanglong.service.api;
 
 import com.it18zhang.kanglong.common.entity.Brand;
+import com.it18zhang.kanglong.common.entity.Sku;
 import com.it18zhang.kanglong.common.entity.Spu;
 import com.it18zhang.kanglong.common.entity.SpuDetail;
 import com.it18zhang.kanglong.common.vo.PageResult;
@@ -42,5 +43,10 @@ public interface SpuServiceApi {
 	 */
 	@GetMapping("/spu/findbyid")
 	Spu findById(@RequestParam("id") Long id);
+
+
+
+	@GetMapping("/spu/findskubyskuid")
+	Sku findSkuBySkuId(@RequestParam("skuId")Long skuId);
 
 }

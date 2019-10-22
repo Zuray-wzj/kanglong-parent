@@ -7,12 +7,17 @@
         <module>kanglong-eureka</module>
         <module>kanglong-zuul-gateway</module>
         <module>kanglong-common</module>
-        <module>kanglong-service</module>
+        <!--<module>kanglong-service</module>-->
         <module>kanglong-web</module>
         <module>kanglong-service-api</module>
         <module>my-spring-es</module>
         <module>kanglong-search</module>
         <module>kanglong-itemdetail</module>
+        <module>kanglong-ss</module>
+        <module>kanglong-user</module>
+        <module>kanglong-cart</module>
+        <module>kanglong-order</module>
+
 
 
     </modules>

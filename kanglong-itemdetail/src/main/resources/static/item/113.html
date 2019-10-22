@@ -131,7 +131,7 @@
                         <!--默认第一个预览-->
                         <div id="preview" class="spec-preview">
 							<span class="jqzoom">
-								<!--<img :jqimg="images[0]" :src="images[0]" width="400px" height="400px"/>-->
+								<img :jqimg="images[0]" :src="images[0]" width="400px" height="400px"/>
 							</span>
                         </div>
                         <!--下方的缩略图-->
@@ -140,9 +140,9 @@
                             <!--左右按钮-->
                             <div class="items">
                                 <ul>
-                                    <!--<li v-for="image in images">-->
-                                        <!--<img :src="image" :bimg="image" onmousemove="preview(this)"/>-->
-                                    <!--</li>-->
+                                    <li v-for="image in images">
+                                        <img :src="image" :bimg="image" onmousemove="preview(this)"/>
+                                    </li>
 
                                 </ul>
                             </div>
@@ -688,15 +688,15 @@
                 klTop: () => import('/item/js/pages/top.js')
         },
         computed: {
-        // sku() {
-        //     const index = Object.values(this.indexes).join("_");//[0,0,0]  0_0_0
-        //     return this.skus.find(s => s.indexes == index);
-        // },
-        // images() {
-        //
-        //     return this.sku.images ? this.sku.images.split(",") : ['']
-        //
-        // }
+        sku() {
+            const index = Object.values(this.indexes).join("_");//[0,0,0]  0_0_0
+            return this.skus.find(s => s.indexes == index);
+        },
+        images() {
+
+            return this.sku.images ? this.sku.images.split(",") : ['']
+
+        }
     },
     methods: {
         addCart() {

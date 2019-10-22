@@ -7,7 +7,9 @@ import com.it18zhang.kanglong.common.vo.SpuVO;
 import com.it18zhang.kanglong.mapper.SkuMapper;
 import com.it18zhang.kanglong.mapper.SpuDetailMapper;
 import com.it18zhang.kanglong.mapper.SpuMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,19 @@ public class SpuService {
 
 	@Autowired
 	private CategoryService categoryService ;
+
+
+
+	@Autowired
+
+	private RabbitTemplate rabbitTemplate ;
+
+
+
+
+
+
+
 
 	/**
 	 * 查询商品列表

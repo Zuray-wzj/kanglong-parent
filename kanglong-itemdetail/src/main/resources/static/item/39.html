@@ -670,8 +670,6 @@
 
     var itemVm = new Vue({
             el: "#itemApp",
-            images: 'app',
-            sku: 'app',
             data: {
                 categories: c,
                 brand: g,
@@ -697,6 +695,7 @@
         images() {
 
             return this.sku.images ? this.sku.images.split(",") : ['']
+
         }
     },
     methods: {
