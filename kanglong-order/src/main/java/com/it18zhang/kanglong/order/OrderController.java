@@ -19,8 +19,8 @@ public class OrderController {
 	@PostMapping(value = "/submit" ,consumes = "application/json")
 	public void submit(@RequestBody Order order , @RequestParam("token") String token) throws Exception {
 		//解析出userId
-		Long userId = JWTUtil.parseUserIdFromToken(token) ;
-		order.setUser_id(userId);
+		//Long userId = JWTUtil.parseUserIdFromToken(token) ;
+		order.setUser_id(29L);
 		orderService.saveOrder(order);
 		System.out.println("ok");
 	}

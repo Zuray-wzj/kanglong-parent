@@ -5,6 +5,10 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: zuul-gateway
+  datasource:
+    url: jdbc:mysql://localhost:3306/kanglong
+    username: root
+    password: root
   profiles:
     active: ''
 eureka:
@@ -17,8 +21,12 @@ eureka:
     ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port}
 zuul:
-  prefix: /zuul
+#  prefix: /zuul
   retryable: true
+  routes:
+    user:
+      url: http://localhost:8088/user
+
 ribbon:
   ConnectTimeout: 10000
   ReadTimeout: 10000
